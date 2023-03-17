@@ -1,7 +1,10 @@
+import array
+
+
 class Environment:
     def __init__(self, rooms, dirt):
-        self.rooms = rooms
-        self.dirt = dirt
+        self.rooms: int = rooms
+        self.dirt: array = dirt
 
     def is_dirty(self, pos):
         if pos in self.dirt:
@@ -15,8 +18,10 @@ class Environment:
 
 
 class Vacuum:
+    FIRST_POSSIBLE_POS = 1
+
     def __init__(self, position):
-        self.position = position
+        self.position: int = position
 
     def clean(self, env):
         if self.position in env.dirt:
@@ -25,25 +30,24 @@ class Vacuum:
             print("Room already clean")
 
     def move_left(self):
-        self.position -= 1
+        self.position = int(self.position) - 1
 
     def move_right(self):
-        self.position += 1
+        self.position = int(self.position) + 1
 
 
 def create_environment():
     rooms = input("Enter number of rooms")
     x = input("Enter amount of dirty rooms")
     dirt = []
-    for i in x:
+    for i in range(int(x)):
         pos = input("Enter position of dirt")
         dirt.append(pos)
     env = Environment(rooms, dirt)
     return env
 
 
-def manual(env):
-
+def manual(env: Environment):
     vacuum_pos = input("Choose where the vacuum will start")
     vac = Vacuum(vacuum_pos)
     while env.is_there_dirt():
@@ -57,11 +61,20 @@ def manual(env):
             case 'c':
                 vac.clean(env)
             case 'l':
-                vac.move_left()
+                # todo -> fix this case not working
+                if vac.position > Vacuum.FIRST_POSSIBLE_POS:
+                    vac.move_left()
+                    print("Currently at position" + str(vac.position))
+                else:
+                    print("Already at first room")
             case 'r':
-                vac.move_right()
+                if vac.position < env.rooms:
+                    vac.move_right()
+                    print("Currently at position" + str(vac.position))
+                else:
+                    print("Already at last room")
             case 'd':
-                if env.is_dirty():
+                if env.is_dirty(vac.position):
                     print("Room is dirty")
                 else:
                     print("Room is not dirty")
