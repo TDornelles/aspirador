@@ -15,7 +15,7 @@ class Environment:
 
 
 class Vacuum:
-    def __init__(self, position, orientation):
+    def __init__(self, position):
         self.position = position
 
     def clean(self, env):
@@ -42,13 +42,33 @@ def create_environment():
     return env
 
 
-def manual():
-    user_choice = input("Choose the action for the vacuum\n"
-                        "c -> Clean\n"
-                        "l -> go left\n"
-                        "r -> go right\n"
-                        "d -> detect if room is clean\n"
-                        "e -> exit program")
+def manual(env):
+
+    vacuum_pos = input("Choose where the vacuum will start")
+    vac = Vacuum(vacuum_pos)
+    while env.is_there_dirt():
+        user_choice = input("Choose the action for the vacuum\n"
+                            "c -> Clean\n"
+                            "l -> go left\n"
+                            "r -> go right\n"
+                            "d -> detect if room is clean\n"
+                            "e -> exit program")
+        match user_choice:
+            case 'c':
+                vac.clean(env)
+            case 'l':
+                vac.move_left()
+            case 'r':
+                vac.move_right()
+            case 'd':
+                if env.is_dirty():
+                    print("Room is dirty")
+                else:
+                    print("Room is not dirty")
+            case 'e':
+                exit()
+
+    print("All rooms are clean")
 
 
 def __main__():
@@ -58,7 +78,7 @@ def __main__():
         mode = input("Pick the mode: manual/base/omniscient")
         match mode:
             case 'manual':
-                manual()
+                manual(env)
             case 'base':
                 print("not implemented")
                 break
@@ -68,5 +88,8 @@ def __main__():
 
     rerun = input("Rerun? (Y/N)")
 
-    if rerun:
+    if rerun.upper() == "Y":
         __main__()
+
+
+__main__()
