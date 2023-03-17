@@ -8,6 +8,11 @@ class Environment:
             return True
         return False
 
+    def is_there_dirt(self):
+        if len(self.dirt) > 0:
+            return True
+        return False
+
 
 class Vacuum:
     def __init__(self, position, orientation):
@@ -36,3 +41,32 @@ def create_environment():
     env = Environment(rooms, dirt)
     return env
 
+
+def manual():
+    user_choice = input("Choose the action for the vacuum\n"
+                        "c -> Clean\n"
+                        "l -> go left\n"
+                        "r -> go right\n"
+                        "d -> detect if room is clean\n"
+                        "e -> exit program")
+
+
+def __main__():
+    env = create_environment()
+
+    while env.is_there_dirt():
+        mode = input("Pick the mode: manual/base/omniscient")
+        match mode:
+            case 'manual':
+                manual()
+            case 'base':
+                print("not implemented")
+                break
+            case 'omniscient':
+                print("not implemented")
+                break
+
+    rerun = input("Rerun? (Y/N)")
+
+    if rerun:
+        __main__()
