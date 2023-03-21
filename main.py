@@ -1,12 +1,9 @@
-import array
-
-
 class Environment:
-    def __init__(self, rooms, dirt):
-        self.rooms: int = int(rooms)
-        self.dirt: array = dirt
+    def __init__(self, rooms: int, dirt: list):
+        self.rooms = rooms
+        self.dirt = dirt
 
-    def is_dirty(self, pos):
+    def is_dirty(self, pos: int):
         if pos in self.dirt:
             return True
         return False
@@ -20,35 +17,35 @@ class Environment:
 class Vacuum:
     FIRST_POSSIBLE_POS = 1
 
-    def __init__(self, position):
-        self.position: int = int(position)
+    def __init__(self, position: int):
+        self.position = position
 
-    def clean(self, env):
+    def clean(self, env: Environment):
         if self.position in env.dirt:
             env.dirt.remove(self.position)
         else:
             print("Room already clean")
 
     def move_left(self):
-        self.position = int(self.position) - 1
+        self.position = self.position - 1
 
     def move_right(self):
-        self.position = int(self.position) + 1
+        self.position = self.position + 1
 
 
 def create_environment():
-    rooms = input("Enter number of rooms")
-    x = input("Enter amount of dirty rooms")
+    rooms = int(input("Enter number of rooms "))
+    x = int(input("Enter amount of dirty rooms "))
     dirt = []
     for i in range(int(x)):
-        pos = int(input("Enter position of dirt"))
+        pos = int(input("Enter position of dirt "))
         dirt.append(pos)
     env = Environment(rooms, dirt)
     return env
 
 
 def manual(env: Environment):
-    vacuum_pos = input("Choose where the vacuum will start")
+    vacuum_pos = int(input("Choose where the vacuum will start "))
     vac = Vacuum(vacuum_pos)
     while env.is_there_dirt():
         user_choice = input("Choose the action for the vacuum\n"
@@ -87,7 +84,7 @@ def __main__():
     env = create_environment()
 
     while env.is_there_dirt():
-        mode = input("Pick the mode: manual/base/omniscient")
+        mode = input("Pick the mode: manual/base/omniscient ")
         match mode:
             case 'manual':
                 manual(env)
