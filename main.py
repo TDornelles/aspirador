@@ -3,7 +3,7 @@ import array
 
 class Environment:
     def __init__(self, rooms, dirt):
-        self.rooms: int = rooms
+        self.rooms: int = int(rooms)
         self.dirt: array = dirt
 
     def is_dirty(self, pos):
@@ -21,7 +21,7 @@ class Vacuum:
     FIRST_POSSIBLE_POS = 1
 
     def __init__(self, position):
-        self.position: int = position
+        self.position: int = int(position)
 
     def clean(self, env):
         if self.position in env.dirt:
@@ -41,7 +41,7 @@ def create_environment():
     x = input("Enter amount of dirty rooms")
     dirt = []
     for i in range(int(x)):
-        pos = input("Enter position of dirt")
+        pos = int(input("Enter position of dirt"))
         dirt.append(pos)
     env = Environment(rooms, dirt)
     return env
@@ -61,7 +61,6 @@ def manual(env: Environment):
             case 'c':
                 vac.clean(env)
             case 'l':
-                # todo -> fix this case not working
                 if vac.position > Vacuum.FIRST_POSSIBLE_POS:
                     vac.move_left()
                     print("Currently at position" + str(vac.position))
