@@ -22,7 +22,7 @@ class Environment:
 
 
 class Vacuum:
-    FIRST_POSSIBLE_POS = 1
+    FIRST_POSSIBLE_POS = 0
 
     def __init__(self, position: int):
         self.position = position
@@ -72,7 +72,7 @@ def manual(env: Environment):
                 else:
                     print("Already at first room")
             case 'r':
-                if vac.position < len(env.rooms):
+                if vac.position < len(env.rooms)-1:
                     vac.move_right()
                     print("Currently at position" + str(vac.position))
                 else:
