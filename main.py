@@ -1,17 +1,24 @@
 class Environment:
-    def __init__(self, rooms: int, dirt: list):
+    def __init__(self, rooms: list):
         self.rooms = rooms
-        self.dirt = dirt
 
     def is_dirty(self, pos: int):
-        if pos in self.dirt:
-            return True
-        return False
+        return self.rooms[pos]
 
     def is_there_dirt(self):
-        if len(self.dirt) > 0:
-            return True
-        return False
+        return self.rooms.count(True) > 0
+    
+    def print_rooms(self, pos:int):
+        top_and_bottom = ""
+        mid = "|"
+        for i in range(len(self.rooms)):
+            top_and_bottom = top_and_bottom + "----"
+            if (i==pos): mid = mid + " X |"
+            else: mid = mid + "   |"
+        top_and_bottom = top_and_bottom + "-"
+        print(top_and_bottom)
+        print(mid)
+        print(top_and_bottom)
 
 
 class Vacuum:
@@ -21,8 +28,8 @@ class Vacuum:
         self.position = position
 
     def clean(self, env: Environment):
-        if self.position in env.dirt:
-            env.dirt.remove(self.position)
+        if env.rooms[self.position]:
+            env.rooms[self.position] = False
         else:
             print("Room already clean")
 
@@ -34,13 +41,13 @@ class Vacuum:
 
 
 def create_environment():
-    rooms = int(input("Enter number of rooms "))
+    numberOfRooms = int(input("Enter number of rooms "))
+    rooms = [False] * numberOfRooms
     x = int(input("Enter amount of dirty rooms "))
-    dirt = []
     for i in range(int(x)):
         pos = int(input("Enter position of dirt "))
-        dirt.append(pos)
-    env = Environment(rooms, dirt)
+        rooms[pos] = True
+    env = Environment(rooms)
     return env
 
 
@@ -48,6 +55,7 @@ def manual(env: Environment):
     vacuum_pos = int(input("Choose where the vacuum will start "))
     vac = Vacuum(vacuum_pos)
     while env.is_there_dirt():
+        env.print_rooms(vac.position)
         user_choice = input("Choose the action for the vacuum\n"
                             "c -> Clean\n"
                             "l -> go left\n"
@@ -64,7 +72,7 @@ def manual(env: Environment):
                 else:
                     print("Already at first room")
             case 'r':
-                if vac.position < env.rooms:
+                if vac.position < len(env.rooms):
                     vac.move_right()
                     print("Currently at position" + str(vac.position))
                 else:
@@ -73,7 +81,7 @@ def manual(env: Environment):
                 if env.is_dirty(vac.position):
                     print("Room is dirty")
                 else:
-                    print("Room is not dirty")
+                    print("Room is clean")
             case 'e':
                 exit()
 
