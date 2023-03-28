@@ -8,17 +8,23 @@ class Environment:
     def is_there_dirt(self):
         return self.rooms.count(True) > 0
     
-    def print_rooms(self, pos:int):
-        top_and_bottom = ""
-        mid = "|"
+    def print_env(self, pos:int):
+        mold = "-----------------"
+        top= "| ROOM\t\t|"
+        mid = "| VACUUM\t|"
+        bottom = "| DIRT\t\t|"
         for i in range(len(self.rooms)):
-            top_and_bottom = top_and_bottom + "----"
+            mold = mold + "----"
+            top = top + " "+str(i)+" |"
+            if (self.rooms[i]): bottom = bottom + " X |"
+            else: bottom = bottom + "   |"
             if (i==pos): mid = mid + " X |"
             else: mid = mid + "   |"
-        top_and_bottom = top_and_bottom + "-"
-        print(top_and_bottom)
+        print(mold)
+        print(top)
         print(mid)
-        print(top_and_bottom)
+        print(bottom)
+        print(mold)
 
 
 class Vacuum:
@@ -55,7 +61,7 @@ def manual(env: Environment):
     vacuum_pos = int(input("Choose where the vacuum will start "))
     vac = Vacuum(vacuum_pos)
     while env.is_there_dirt():
-        env.print_rooms(vac.position)
+        env.print_env(vac.position)
         user_choice = input("Choose the action for the vacuum\n"
                             "c -> Clean\n"
                             "l -> go left\n"
