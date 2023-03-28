@@ -1,3 +1,7 @@
+from random import randint
+from base import busca
+
+
 class Environment:
     def __init__(self, rooms: list):
         self.rooms = rooms
@@ -103,7 +107,20 @@ def __main__():
             case 'manual':
                 manual(env)
             case 'base':
-                print("not implemented")
+                initPos = randint(0,len(env.rooms)-1)
+                vac = Vacuum(initPos)
+                print(initPos)
+                moves = busca(len(env.rooms), initPos)
+                print(moves)
+                print(env.print_env(initPos))
+                for move in moves:
+                    if move == 'r':
+                        vac.move_right()
+                        print(env.print_env(vac.position))
+                    else:
+                        vac.move_left()
+                        print(env.print_env(vac.position))
+                        
                 break
             case 'omniscient':
                 print("not implemented")
