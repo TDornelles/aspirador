@@ -18,12 +18,13 @@ class Environment:
         mid = "| VACUUM\t|"
         bottom = "| DIRT\t\t|"
         for i in range(len(self.rooms)):
-            mold = mold + "----"
-            top = top + " "+str(i)+" |"
-            if (self.rooms[i]): bottom = bottom + " X |"
-            else: bottom = bottom + "   |"
-            if (i==pos): mid = mid + " X |"
-            else: mid = mid + "   |"
+            mold = mold + "-----"
+            if i<10: top = top + "  "+str(i)+" |"
+            else: top = top + " "+str(i)+" |"
+            if (self.rooms[i]): bottom = bottom + "  X |"
+            else: bottom = bottom + "    |"
+            if (i==pos): mid = mid + "  X |"
+            else: mid = mid + "    |"
         print(mold)
         print(top)
         print(mid)
@@ -109,18 +110,16 @@ def __main__():
             case 'base':
                 initPos = randint(0,len(env.rooms)-1)
                 vac = Vacuum(initPos)
-                print(initPos)
                 moves = busca(len(env.rooms), initPos)
-                print(moves)
-                print(env.print_env(initPos))
                 for move in moves:
                     if move == 'r':
                         vac.move_right()
+                        if env.is_dirty(vac.position): vac.clean(env)
                         print(env.print_env(vac.position))
                     else:
                         vac.move_left()
+                        if env.is_dirty(vac.position): vac.clean(env)
                         print(env.print_env(vac.position))
-                        
                 break
             case 'omniscient':
                 print("not implemented")

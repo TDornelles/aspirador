@@ -10,7 +10,7 @@ def busca(roomsize, initPos):
     initNode.checked.append(initPos)
 
     ## CHECK WHICH WAY IS OPTIMAL TO START
-    if initPos < roomsize:
+    if initPos < roomsize/2:
         initNode.moves.append('l')
         initNode.checked.append(initPos-1)
         initNode.pos = initNode.pos-1
