@@ -8,7 +8,7 @@ class Environment:
     def is_there_dirt(self):
         return self.rooms.count(True) > 0
     
-    def print_env(self, pos:int):
+    def print_env(self, pos:int, mode):
         mold = "-----------------"
         top= "| ROOM\t\t|"
         mid = "| VACUUM\t|"
@@ -17,8 +17,14 @@ class Environment:
             mold = mold + "-----"
             if i<10: top = top + "  "+str(i)+" |"
             else: top = top + " "+str(i)+" |"
-            if (self.rooms[i]): bottom = bottom + "  X |"
-            else: bottom = bottom + "    |"
+            if (mode == "base"):
+                if (i==pos):
+                    if (self.rooms[i]): bottom = bottom + "  X |"
+                    else: bottom = bottom + "    |"
+                else: bottom = bottom + "  ? |"
+            else:
+                if (self.rooms[i]): bottom = bottom + "  X |"
+                else: bottom = bottom + "    |"
             if (i==pos): mid = mid + "  X |"
             else: mid = mid + "    |"
         print(mold)
@@ -26,7 +32,6 @@ class Environment:
         print(mid)
         print(bottom)
         print(mold)
-        print("\n")
 
 class Vacuum:
     FIRST_POSSIBLE_POS = 0

@@ -1,16 +1,27 @@
-from random import randint
-from base import busca
 from entities import Environment as Environment
 from entities import Vacuum as Vacuum
+from random import randint
+import base
 
 
-def create_environment():
-    numberOfRooms = int(input("Enter number of rooms "))
+def create_environment(mode):
+    numberOfRooms = int(input("Enter number of rooms: "))
     rooms = [False] * numberOfRooms
-    x = int(input("Enter amount of dirty rooms "))
+    x = int(input("Enter amount of dirty rooms: "))
+    
+    dirtyPos = []
     for i in range(int(x)):
-        pos = int(input("Enter position of dirt "))
-        rooms[pos] = True
+        # IF MANUAL, INSERT DESIRED DIRTY ROOMS
+        if (mode == "manual"):
+            pos = int(input("Enter position of dirt: "))
+            rooms[pos] = True
+        # ELSE, INSERT RANDOM DIRTY POSITIONS
+        else:
+            newDirtyPos = randint(0,numberOfRooms-1)
+            while (dirtyPos.count(newDirtyPos)): newDirtyPos = randint(0,numberOfRooms-1)
+            rooms[newDirtyPos] = True
+            dirtyPos.append(newDirtyPos)
+
     env = Environment(rooms)
     return env
 
@@ -19,7 +30,7 @@ def manual(env: Environment):
     vacuum_pos = int(input("Choose where the vacuum will start "))
     vac = Vacuum(vacuum_pos)
     while env.is_there_dirt():
-        env.print_env(vac.position)
+        env.print_env(vac.position, "manual")
         user_choice = input("Choose the action for the vacuum\n"
                             "c -> Clean\n"
                             "l -> go left\n"
@@ -53,28 +64,15 @@ def manual(env: Environment):
 
 
 def __main__():
-    env = create_environment()
+    mode = input("Pick the mode: manual/base/omniscient ")
+    env = create_environment(mode)
 
     while env.is_there_dirt():
-        mode = input("Pick the mode: manual/base/omniscient ")
         match mode:
             case 'manual':
                 manual(env)
             case 'base':
-                initPos = randint(0,len(env.rooms)-1)
-                vac = Vacuum(initPos)
-                moves = busca(len(env.rooms), initPos)
-                env.print_env(initPos)
-                for move in moves:
-                    if move == 'r':
-                        vac.move_right()
-                        if env.is_dirty(vac.position): vac.clean(env)
-                        env.print_env(vac.position)
-                    else:
-                        vac.move_left()
-                        if env.is_dirty(vac.position): vac.clean(env)
-                        env.print_env(vac.position)
-                break
+                base.base(env)
             case 'omniscient':
                 print("not implemented")
                 break

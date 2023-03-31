@@ -1,3 +1,7 @@
+from entities import Environment as Environment
+from entities import Vacuum as Vacuum
+from random import randint
+
 class Node:
     def __init__(self, moves, pos):
         self.moves = moves
@@ -53,6 +57,32 @@ def busca(roomsize, initPos):
                     initNode.pos = initNode.pos+1
 
     return initNode.moves
+
+def base(env:Environment):
+    # GET RANDOM INITIAL POSITION
+    initPos = randint(0,len(env.rooms)-1)
+    vac = Vacuum(initPos)
+    # CALCULATE OPTIMAL MOVES TO CHECK ALL ROOMS
+    moves = busca(len(env.rooms), initPos)
+    # PRINT INITIAL STATE
+    env.print_env(initPos, "base")
+    # IF INITIAL POSITION IS DIRTY, CLEAN AND PRINT STATE
+    if env.is_dirty(vac.position):
+        vac.clean(env)
+        print("*Cleaned room "+str(vac.position)+"*")
+        env.print_env(initPos, "base")
+    # ITERATE FOR ALL MOVES CACLCULATED
+    for move in moves:
+        if move == 'r': vac.move_right()
+        else: vac.move_left()
+        env.print_env(vac.position, "base")
+        if env.is_dirty(vac.position):
+            vac.clean(env)
+            print("*Cleaned room "+str(vac.position)+"*")
+            env.print_env(vac.position, "base")
+    # FINAL PRINT
+    print("*ALL ROOMS CHECKED*\n")
+            
 
 
 
