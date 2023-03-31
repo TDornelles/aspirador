@@ -1,12 +1,9 @@
 from entities import Environment as Environment
 from entities import Vacuum as Vacuum
+from entities import Node as Node
 from random import randint
 
-class Node:
-    def __init__(self, moves, pos):
-        self.moves = moves
-        self.pos = pos
-        self.checked = []
+
 
 def busca(roomsize, initPos):
     solved = False

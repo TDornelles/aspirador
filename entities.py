@@ -1,6 +1,13 @@
+class Node:
+    def __init__(self, moves, pos):
+        self.moves = moves
+        self.pos = pos
+        self.checked = []
+
 class Environment:
-    def __init__(self, rooms: list):
+    def __init__(self, rooms: list, dirtyPos: list):
         self.rooms = rooms
+        self.dirtyPos = dirtyPos
 
     def is_dirty(self, pos: int):
         return self.rooms[pos]
