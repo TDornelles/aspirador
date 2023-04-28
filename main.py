@@ -4,6 +4,7 @@ from random import randint
 import base
 import manual
 import omniscient
+import omniscient_random
 
 
 def create_environment(mode):
@@ -36,6 +37,8 @@ def __main__():
             case 'omniscient':
                 omniscient.exec(env)
                 break
+            case 'random':
+                omniscient_random.exec(env)
 
     rerun = input("Rerun? (Y/N)")
 
